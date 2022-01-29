@@ -9,9 +9,11 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using static InventorySystem.SharedValidation;
+
 namespace InventorySystem
 {
-    public partial class AddPartForm : Form
+    public partial class AddModifyPartForm : Form
     {
         // I use an enum here to modify the form depending on if a part is being added or modified
         // This reduces the code I need to write by re-using what I have for the Add form in the Modify form,
@@ -26,7 +28,7 @@ namespace InventorySystem
         /// </summary>
         /// <param name="inventory">The forums Inventory object</param>
         /// <param name="mode">The OpenMode for the AddPartForm</param>
-        public AddPartForm(Inventory inventory, OpenMode mode)
+        public AddModifyPartForm(Inventory inventory, OpenMode mode)
         {
             InitializeComponent();
             Inventory = inventory;
@@ -41,7 +43,7 @@ namespace InventorySystem
         /// <param name="inventory">The forums Inventory object</param>
         /// <param name="mode">The OpenMode for the AddPartForm</param>
         /// <param name="part">The Part to modify</param>
-        public AddPartForm(Inventory inventory, OpenMode mode, Part part) : this(inventory, mode)
+        public AddModifyPartForm(Inventory inventory, OpenMode mode, Part part) : this(inventory, mode)
         {
             // Prepopoulate the text in the text boxes from the part data
             textBoxPartID.Text = part.PartID.ToString();
@@ -126,46 +128,6 @@ namespace InventorySystem
                 labelSourceEntityID.Text = "Company Name";
             }
             TextboxMappings[textBoxSourceEntityID] = labelSourceEntityID.Text;
-        }
-
-        /// <summary>
-        /// Validates the Text of a TextBox to match the System.Text.RegularExpressions.Regex expression passed along with it.
-        /// </summary>
-        /// <param name="textSender">A TextBox control</param>
-        /// <param name="expression">A string regex pattern to validate the TextBox.Text against</param>
-        private static void ValidateTextBoxText(TextBox textSender, Regex expression)
-        {
-            if (expression.IsMatch(textSender.Text))
-            {
-                var sanatizedTextBuilder = new StringBuilder();
-                var currentPos = textSender.SelectionStart;
-                foreach (var ch in textSender.Text)
-                {
-                    if (expression.IsMatch(ch.ToString()))
-                    {
-                        // Because a new string is returned each time, the result needs to be stored somewhere.
-                        // Creating a new string each time would be intensive, especially if a user pastes a large invalid value.
-                        // StringBuilder can only append, so it continually appends a continuously sanatizing result after
-                        // Clearing itself.
-                        // This can take a while still, but is faster than creating a new string each time.
-                        sanatizedTextBuilder.Clear();
-                        sanatizedTextBuilder.Append(textSender.Text.Remove(textSender.Text.IndexOf(ch), 1));
-                    }
-                }
-                textSender.Text = sanatizedTextBuilder.ToString();
-                // Forcibly setting the text above puts the cursor back at the beginning. For user experience, 
-                // reset the cursor back to where it was - 1 (as the latest character was invalid).
-                try
-                {
-                    textSender.SelectionStart = currentPos - 1;
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    // Sometimes the currentPos is 0, can't do 0 - 1
-                    textSender.SelectionStart = currentPos;
-                }
-                textSender.SelectionLength = 0;
-            }
         }
 
         /// <summary>
@@ -261,20 +223,20 @@ namespace InventorySystem
 
         private void textBoxInventory_TextChanged(object sender, EventArgs e)
         {
-            ValidateTextBoxText((TextBox)sender, new Regex("[^0-9]"));
+            ValidateTextBoxInt((TextBox)sender, new Regex("[^0-9]"));
         }
 
         private void textBoxPriceCost_TextChanged(object sender, EventArgs e)
         {
             var textSender = (TextBox)sender;
-            ValidateTextBoxText(textSender, new Regex("[^0-9.]"));
+            ValidateTextBoxInt(textSender, new Regex("[^0-9.]"));
         }
 
         private void textBoxPriceCost_Validating(object sender, CancelEventArgs e)
         {
             var textSender = (TextBox)sender;
             // Must be any number of digits followed by optional '.', and optional 1 -2 digits, or empty.
-            if (!System.Text.RegularExpressions.Regex.IsMatch(textSender.Text, @"(^\d+(\.\d(\d)?)?$)|(^.{0}$)"))
+            if (!Regex.IsMatch(textSender.Text, @"(^\d+(\.\d(\d)?)?$)|(^.{0}$)"))
             {
                 MessageBox.Show($"{labelPriceCost.Text} does not have a valid price. Limit to two decimal places, or enter a valid decimal.",
                     "Invalid price input!", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -295,17 +257,17 @@ namespace InventorySystem
         {
             SetLabelSourceEntityID();
             // When Outsourced is checked, and this state changes, textBoxSourceEntityID needs to be verified to have an int value, not a string value.
-            ValidateTextBoxText(textBoxSourceEntityID, new Regex("[^0-9]"));
+            ValidateTextBoxInt(textBoxSourceEntityID, new Regex("[^0-9]"));
         }
 
         private void textBoxMin_TextChanged(object sender, EventArgs e)
         {
-            ValidateTextBoxText((TextBox)sender, new Regex("[^0-9]"));
+            ValidateTextBoxInt((TextBox)sender, new Regex("[^0-9]"));
         }
 
         private void textBoxMax_TextChanged(object sender, EventArgs e)
         {
-            ValidateTextBoxText((TextBox)sender, new Regex("[^0-9]"));
+            ValidateTextBoxInt((TextBox)sender, new Regex("[^0-9]"));
         }
 
         private void textBoxSourceEntityID_TextChanged(object sender, EventArgs e)
@@ -313,7 +275,7 @@ namespace InventorySystem
             // Only the InHouse option uses an int ID.
             if (radioButtonInHouse.Checked)
             {
-                ValidateTextBoxText((TextBox)sender, new Regex("[^0-9]"));
+                ValidateTextBoxInt((TextBox)sender, new Regex("[^0-9]"));
             }
         }
 

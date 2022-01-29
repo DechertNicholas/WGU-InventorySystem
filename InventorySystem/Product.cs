@@ -17,6 +17,11 @@ namespace InventorySystem
         public int Min { get; set; }
         public int Max { get; set; }
 
+        public Product()
+        {
+            AssociatedParts = new BindingList<Part>();
+        }
+
         public void AddAssociatedpart(Part part)
         {
             throw new NotImplementedException();

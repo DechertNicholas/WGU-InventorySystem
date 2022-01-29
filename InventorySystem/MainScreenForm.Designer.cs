@@ -194,6 +194,7 @@ namespace InventorySystem
             this.buttonDataGridViewProductsAdd.TabIndex = 8;
             this.buttonDataGridViewProductsAdd.Text = "Add";
             this.buttonDataGridViewProductsAdd.UseVisualStyleBackColor = true;
+            this.buttonDataGridViewProductsAdd.Click += new System.EventHandler(this.buttonDataGridViewProductsAdd_Click);
             // 
             // buttonDataGridViewProductsModify
             // 

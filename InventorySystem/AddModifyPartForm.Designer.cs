@@ -1,7 +1,7 @@
 ﻿
 namespace InventorySystem
 {
-    partial class AddPartForm
+    partial class AddModifyPartForm
     {
         /// <summary>
         /// Required designer variable.

@@ -16,16 +16,22 @@ namespace InventorySystem
 {
     public partial class MainScreenForm : Form
     {
+        /// <summary>
+        /// Instance of the Inventory Class used for everything.
+        /// </summary>
         public Inventory MainInventory { get; }
 
         public MainScreenForm()
         {
             InitializeComponent();
             MainInventory = new Inventory();
-            dataGridViewParts.DataSource = MainInventory.AllParts; ;
+            dataGridViewParts.DataSource = MainInventory.AllParts;
             PopulateInitialData();
         }
 
+        /// <summary>
+        /// Quickly populate some sample data so the evaluator doesn't have to add everything manually.
+        /// </summary>
         void PopulateInitialData()
         {
             MainInventory.AddPart(new InHouse { Name = "Wheel", MachineID = 1, Min = 5, Max = 25, InStock = 10, Price = 2 });
@@ -58,6 +64,10 @@ namespace InventorySystem
             }
         }
 
+        /// <summary>
+        /// Moves the dataGridView selection to a part where the Part.Name matches what is in the search textbox.
+        /// </summary>
+        /// <param name="searchText"></param>
         private void HighlightSearchPart(string searchText)
         {
             // Need index of
@@ -69,7 +79,7 @@ namespace InventorySystem
 
         private void buttonDataGridViewPartsAdd_Click(object sender, EventArgs e)
         {
-            var partForm = new AddPartForm(MainInventory, AddPartForm.OpenMode.ADD);
+            var partForm = new AddModifyPartForm(MainInventory, AddModifyPartForm.OpenMode.ADD);
             partForm.ShowDialog(this);
             partForm.Dispose();
         }
@@ -77,7 +87,7 @@ namespace InventorySystem
         private void buttonDataGridViewPartsModify_Click(object sender, EventArgs e)
         {
             Part selectedpart = CastSelectedDataGridViewObject(dataGridViewParts.SelectedRows);
-            var partForm = new AddPartForm(MainInventory, AddPartForm.OpenMode.MODIFY, selectedpart);
+            var partForm = new AddModifyPartForm(MainInventory, AddModifyPartForm.OpenMode.MODIFY, selectedpart);
             partForm.ShowDialog(this);
             partForm.Dispose();
         }
@@ -140,6 +150,13 @@ namespace InventorySystem
         private void textBoxSearchProducts_Leave(object sender, EventArgs e)
         {
             this.AcceptButton = null;
+        }
+
+        private void buttonDataGridViewProductsAdd_Click(object sender, EventArgs e)
+        {
+            var productForm = new AddModifyProductForm(MainInventory, AddModifyProductForm.OpenMode.ADD);
+            productForm.ShowDialog(this);
+            productForm.Dispose();
         }
     }
 }
