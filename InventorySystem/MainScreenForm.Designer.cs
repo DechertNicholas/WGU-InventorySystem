@@ -126,6 +126,7 @@ namespace InventorySystem
             this.buttonSearchProducts.TabIndex = 6;
             this.buttonSearchProducts.Text = "Search";
             this.buttonSearchProducts.UseVisualStyleBackColor = true;
+            this.buttonSearchProducts.Click += new System.EventHandler(this.buttonSearchProducts_Click);
             // 
             // textBoxSearchProducts
             // 
@@ -134,6 +135,7 @@ namespace InventorySystem
             this.textBoxSearchProducts.Size = new System.Drawing.Size(147, 23);
             this.textBoxSearchProducts.TabIndex = 7;
             this.textBoxSearchProducts.Enter += new System.EventHandler(this.textBoxSearchProducts_Enter);
+            this.textBoxSearchProducts.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxSearchProducts_KeyDown);
             this.textBoxSearchProducts.Leave += new System.EventHandler(this.textBoxSearchProducts_Leave);
             // 
             // labelDataGridVewProductsTitle
@@ -204,6 +206,7 @@ namespace InventorySystem
             this.buttonDataGridViewProductsModify.TabIndex = 9;
             this.buttonDataGridViewProductsModify.Text = "Modify";
             this.buttonDataGridViewProductsModify.UseVisualStyleBackColor = true;
+            this.buttonDataGridViewProductsModify.Click += new System.EventHandler(this.buttonDataGridViewProductsModify_Click);
             // 
             // buttonDataGridViewProductsDelete
             // 
@@ -213,6 +216,7 @@ namespace InventorySystem
             this.buttonDataGridViewProductsDelete.TabIndex = 10;
             this.buttonDataGridViewProductsDelete.Text = "Delete";
             this.buttonDataGridViewProductsDelete.UseVisualStyleBackColor = true;
+            this.buttonDataGridViewProductsDelete.Click += new System.EventHandler(this.buttonDataGridViewProductsDelete_Click);
             // 
             // buttonExit
             // 

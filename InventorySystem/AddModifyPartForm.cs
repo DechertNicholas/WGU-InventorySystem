@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using static InventorySystem.SharedValidation;
+using static InventorySystem.SharedUtilities;
 
 namespace InventorySystem
 {

@@ -24,17 +24,17 @@ namespace InventorySystem
 
         public void AddAssociatedpart(Part part)
         {
-            throw new NotImplementedException();
+            AssociatedParts.Add(part);
         }
 
         public bool RemoveAssociatedPart(int partID)
         {
-            throw new NotImplementedException();
+            return AssociatedParts.Remove(LookupAssociatedPart(partID));
         }
 
         public Part LookupAssociatedPart(int partID)
         {
-            throw new NotImplementedException();
+            return AssociatedParts.FirstOrDefault(p => p.PartID == partID);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -8,14 +9,14 @@ using System.Windows.Forms;
 
 namespace InventorySystem
 {
-    public static class SharedValidation
+    internal static class SharedUtilities
     {
         /// <summary>
         /// Validates the Text of a TextBox to match the System.Text.RegularExpressions.Regex expression passed along with it.
         /// </summary>
         /// <param name="textSender">A TextBox control</param>
         /// <param name="expression">A string regex pattern to validate the TextBox.Text against</param>
-        public static void ValidateTextBoxInt(TextBox textSender, Regex expression)
+        internal static void ValidateTextBoxInt(TextBox textSender, Regex expression)
         {
             if (expression.IsMatch(textSender.Text))
             {

@@ -19,26 +19,29 @@ namespace InventorySystem
         public Inventory()
         {
             this.AllParts = new BindingList<Part>();
+            this.Products = new BindingList<Product>();
         }
 
         public void AddProduct(Product product)
         {
-            throw new NotImplementedException();
+            product.ProductID = LastProductId;
+            LastProductId++;
+            Products.Add(product);
         }
 
         public bool RemoveProduct(int productID)
         {
-            throw new NotImplementedException();
+            return Products.Remove(LookupProduct(productID));
         }
 
         public Product LookupProduct(int productID)
         {
-            throw new NotImplementedException();
+            return Products.FirstOrDefault(p => p.ProductID == productID);
         }
 
-        public void UpdateProduct(int productID)
+        public void UpdateProduct(int productID, Product product)
         {
-            throw new NotImplementedException();
+            Products[Products.IndexOf(LookupProduct(productID))] = product;
         }
 
         public void AddPart(Part part)
@@ -56,6 +59,11 @@ namespace InventorySystem
         public Part LookupPart(int partID)
         {
             return AllParts.FirstOrDefault(p => p.PartID == partID);
+        }
+
+        public Part LookupPart(string partName)
+        {
+            return AllParts.FirstOrDefault(p => p.Name == partName);
         }
 
         public void UpdatePart(int partID, Part part)
